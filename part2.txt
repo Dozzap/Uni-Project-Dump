@@ -1,0 +1,29 @@
+Dhylan Usi
+CS2211
+251246124
+				Assignment 3 part 2
+
+
+1)files
+1.	dir
+i.	 According to man command. Its purpose is to list directory contents; it lists information about the files.
+2.	rm -i . will prompt
+	rm -f. will not prompt
+	As the file read the instruction from left to right, it will read the first option first, and then the second one before executing the command. If rm -i -f, it will not prompt, if                        
+	rm -f -i, it will prompt. Therefore, the 2nd option will have precedence.
+3.	rename can be used for bulk changes of multiple file names. 
+	mv is used to move flies or directory one at a time. 
+4.	ELF means executable and linkable format, which is a standard file used for executables. It can also be used for object code and libraries.
+5.	This is because ls gives you the actual size of the contents of the file in bytes and du gives the size of the file as it resides on the file system or the space that it uses on the disk. Du is slightly larger because it takes into account the disk space the empty while is taking up.
+2)Directories
+1.	mkdir -p grandparent/parent/child
+2.	You can create a directory with a space with an escape sequence, for example mkdir Hello\ World and remove a directory using the same method, for example  rm Hello\ World.
+3.	-m  option. For example, mkdir -m500 <directory name>
+4.	cd –
+5.	pushd +5
+3)Permissions
+1.	-v option. For example, chmod -v 700 <directory name>
+2.	chown --reference=file1 file2
+3.	-c %a. for example, stat -c ‘%a’ <filename >
+4.	To not give permission to rename, rewrite, or remove, we just end to set permissions on the directory of the file that you wants the group to work on. chmod 755 <directory of file> (this allows reading and executing), chmod 744 <directory of file> (only read). The files can have 777 permission
+5.	It will treat it as a=x and modify the permissions in all levels and allow the execute permission. This does not happen on +w, and will only give write permissions for owner and group, not everyone
