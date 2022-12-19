@@ -1,0 +1,274 @@
+                                                                                                                                                                                                                                                                                                                 Assignment4/worldCupDB.c                                                                            0000644 7514027 7514027 00000023117 14335276365 014171  0                                                                                                    ustar   dusi                            dusi                                                                                                                                                                                                                   /*************************************************************************************************************************************************************************
+                                    							    Assignment4      
+						Program Description: Stores database for up to 32 teams. This includes code, name, group seed, and kit color
+
+**************************************************************************************************************************************************************************/
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+//Define Structure
+struct teamData {
+    int teamCode;
+    char *teamName;
+    char *teamSeed;
+    char teamKit;
+};
+
+//Initialize Global Variables
+int counter = 0;
+struct teamData database[32];
+
+//Input Team function
+void inputTeam(){
+
+    //Takes in an integer
+    int teamCode;
+    printf("       ");    
+    printf("%s","Please input a valid Team Code:");
+    scanf("%d", &teamCode);
+
+    //Checks if integer input is already in the database, or it is greater than 31 or, less than 0
+    //If it is, returns to main  menu
+    for (int i = 0; i <32; i++){
+        if ((database[i].teamCode == teamCode ) || (teamCode < 0) || (teamCode >31)){
+            fflush(stdin);
+            printf("Error with inputing Value. Returning to Main Menu\n");
+            return;
+        }
+    }
+
+    //Takes in teamName
+    //Allocates memory  for 25 bits or 25 chars
+     char* teamName;
+    teamName = (char*) malloc(25);
+    printf("       ");
+    printf("%s","Please input a valid Team Name:");
+    scanf("%s", teamName);
+
+    //Checks if the Team Name is in the database or not
+    //If it is, returns to main  menu
+    for (int i = 0; i < 32; i++){
+        if (strcmp(database[i].teamName, teamName) == 0){
+            printf("Team already exist. Returning to Main menu\n");
+            return;
+        }
+    }
+
+    //Takes in Team Seed
+    //Allocates memory for 2 bits or 2 chars
+    char* teamSeed;
+    teamSeed = (char*) malloc(2);
+    printf("       ");
+    printf("%s","Enter group seeding of the team: ");
+    scanf("%s", teamSeed); 
+    
+    //Checks if Team Seed input is already in database or the first and second value is outside of their respective ranges
+    //If it is, returns to main  menu
+    for (int i = 0; i < 32; i++){
+        if (strcmp(database[i].teamSeed, teamSeed) == 0 || teamSeed[0] < 'A' || teamSeed[0] > 'H' || (int)teamSeed[1] - '0' > 4 || (int)teamSeed[1] - '0' < 1){
+            printf("Error input. Returning to Main menu\n");
+            return ;
+        }
+    }
+    
+    //Takes in a char
+    char newTeamKit;
+    printf("       ");
+    printf("%s","Please input a valid Team Kit color:");
+    scanf(" %c", &newTeamKit);
+
+    //Checks if the value is in the specified set
+    //If it is not, returns to main  menu
+    switch(newTeamKit){
+        case 'R':
+        case 'O':
+        case 'Y':
+        case 'G':
+        case 'B':
+        case 'I':
+        case 'V':break;
+        default: printf("Error: Input not valid. Returning to Main menu\n");return;
+     }
+
+    //If all inputs are valid, it will be store in the database and return back to main menu
+    database[counter].teamCode = teamCode;
+    database[counter].teamName = (char *) malloc(strlen(teamName));
+    strncpy(database[counter].teamName, teamName,25);
+    database[counter].teamSeed = (char *) malloc(strlen(teamSeed));
+    strncpy(database[counter].teamSeed, teamSeed,25);
+    database[counter].teamKit = newTeamKit;
+    counter++;
+    return;
+}
+
+//Searches the team in the database based on their team code
+//If the team does not exist, print an error and return to main menu
+void searchTeam(){
+
+    //input the team code of the team you want to find
+    int teamFinder = 0;
+    printf("Input the team code for the team you want to find:");
+    scanf("%d",&teamFinder);
+
+    //If team exist in the database, their information will be printed out
+    for (int i = 0; i < counter; i++){
+        if (teamFinder == database[i].teamCode){
+            printf("%-10s%-25s%-15s%-5s\n", "TeamCode","TeamName","TeamSeed","TeamColor");
+            printf("%-10d%-25s%-15s", database[i].teamCode, database[i].teamName, database[i].teamSeed);
+            switch(database[i].teamKit){
+                case 'R':printf("%-5s","Red");break;
+                case 'O':printf("%-5s","Orange");break;
+                case 'Y':printf("%-5s","Yellow");break;
+                case 'G':printf("%-5s","Green");break;
+                case 'B':printf("%-5s","Blue");break;
+                case 'I':printf("%-5s","Indigo");break;
+                case 'V':printf("%-5s","Violet");break;
+                    printf("\n");
+                    
+            }
+            printf("\n");
+            return;
+        }
+    }
+    printf("Team code does not exist in the database. Returning to Main menu\n");
+    return;
+}
+
+//Updates the team information in the data based using their team code
+void updateTeam(){
+
+    //Words like searchTeam(), asks for input for team code and will interate throught the database until it matches one
+    //If no matches, returns an error
+    int Locationfinder = 0;
+    int teamCode;
+    printf("       ");
+    printf("Please input a valid Team Code:");
+    scanf("%d", &teamCode);
+
+    for (int i = 0 ; i < counter; i++){
+        if (database[i].teamCode == teamCode){
+            break;
+        }
+        else{
+            Locationfinder++;
+        }
+    }
+    if(Locationfinder == counter){
+        printf("Error: Team does not exist. returning to Main menu.\n");
+        return;
+    }
+
+
+    //Takes in teamName
+    //Allocates memory  for 25 bits or 25 chars
+     char* teamName;
+    teamName = (char*) malloc(25);
+    printf("       ");
+    printf("%s","Please input a valid Team Name:");
+    scanf("%s", teamName);
+
+    //Checks if the Team Name is in the database or not
+    //If it is, returns to main  menu
+    for (int i = 0; i < 32; i++){
+        if (strcmp(database[i].teamName, teamName) == 0 && Locationfinder != i){
+            printf("Team already exist. Returning to Main menu\n");
+            return;
+        }
+    }
+
+    //Takes in Team Seed
+    //Allocates memory for 2 bits or 2 chars
+    char* teamSeed;
+    teamSeed = (char*) malloc(2);
+    printf("       ");
+    printf("%s","Enter group seeding of the team: ");
+    scanf("%s", teamSeed); 
+    
+    //Checks if Team Seed input is already in database or the first and second value is outside of their respective ranges
+    //If it is, returns to main  menu
+    for (int i = 0; i < 32; i++){
+        if ((strcmp(database[i].teamSeed, teamSeed) == 0  && Locationfinder != i)|| teamSeed[0] < 'A' || teamSeed[0] > 'H' || (int)teamSeed[1] - '0' > 4 || (int)teamSeed[1] - '0' < 1){
+            printf("Error input. Returning to Main menu\n");
+            return ;
+        }
+    }
+    
+    //Takes in a char
+    char newTeamKit;
+    printf("       ");
+    printf("%s","Please input a valid Team Kit color:");
+    scanf(" %c", &newTeamKit);
+
+    //Checks if the value is in the specified set
+    //If it is not, returns to main  menu
+    switch(newTeamKit){
+        case 'R':
+        case 'O':
+        case 'Y':
+        case 'G':
+        case 'B':
+        case 'I':
+        case 'V':break;
+        default: printf("Error: Input not valid. Returning to Main menu\n");return;
+     }
+
+    //If all inputs are valid, it will be store in the database and return back to main menu
+    database[Locationfinder].teamCode = teamCode;
+    database[Locationfinder].teamName = (char *) malloc(strlen(teamName));
+    strncpy(database[Locationfinder].teamName, teamName,25);
+    database[Locationfinder].teamSeed = (char *) malloc(strlen(teamSeed));
+    strncpy(database[Locationfinder].teamSeed, teamSeed,25);
+    database[Locationfinder].teamKit = newTeamKit;
+    return;
+}
+
+
+//Prints all the datas in the database
+void printTeam(){
+        printf("%-10s%-25s%-15s%-5s\n", "TeamCode","TeamName","TeamSeed","TeamColor");
+    for (int i = 0; i < counter; i++){
+        printf("%-10d%-25s%-15s", database[i].teamCode, database[i].teamName, database[i].teamSeed);
+        switch(database[i].teamKit){
+            case 'R':printf("%-5s","Red");break;
+            case 'O':printf("%-5s","Orange");break;
+            case 'Y':printf("%-5s","Yellow");break;
+            case 'G':printf("%-5s","Green");break;
+            case 'B':printf("%-5s","Blue");break;
+            case 'I':printf("%-5s","Indigo");break;
+            case 'V':printf("%-5s","Violet");break;
+        
+        }
+        printf("\n");
+    }
+}
+
+//Main function
+void main(){
+    printf("******************\n* 2211 World Cup *\n******************");
+    //initialize the values inside the database
+    for (int i = 0; i < 32; i++){ 
+        database[i].teamCode = -1;
+        database[i].teamName = "";
+        database[i].teamSeed = "";
+    }
+    char optionInp;
+
+    //Main Menu,  will call functions corresponding to the input
+    //If q is intputted, leaves program
+    for(;;){
+        printf("\nInput operation code:");
+        scanf(" %c", &optionInp);
+            switch(optionInp){
+            case 'i': inputTeam();break;
+            case 's': searchTeam();break;
+            case 'u': updateTeam();break;
+            case 'p': printTeam();break;
+            case 'q': return;
+            default: printf("Error: Wrong Input\n");break;
+        printf("\n");
+        }
+    }
+}
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
