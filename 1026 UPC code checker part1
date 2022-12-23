@@ -1,0 +1,50 @@
+from code_check import basic_code
+from code_check import positional_code
+from code_check import upc_code
+#4 list place holders for the summary part
+valid_basic_code = []
+valid_positional_code = []
+valid_upc_code = []
+non_valid_code = []
+while True:
+#3 variables to set in as placeholder for later on use
+    is_basic= False
+    is_positional = False
+    is_upc = False
+#while loop will keep prompting until a value of 0 is inputed
+    code = input("Please enter code (digits only) (enter 0 to quit)")
+    if code == str(0):
+        break
+    else:
+    #if boolean expression from basic_code(code) returns True, it will undergo the process:
+        if basic_code(code):
+            is_basic = True
+    #is_basic = False earlier will not be is_basic= True
+            valid_basic_code.append(code)
+    #will print that the code works as basic code
+            print( code + " is a basic code")
+        if positional_code(code):
+            is_positional = True
+            valid_positional_code.append(code)
+            print( code + " is a positional code")
+        if upc_code(code):
+            is_upc = True
+            valid_upc_code.append(code)
+            print( code + " is a upc code")
+print("Summary")
+if len(valid_basic_code) == 0:
+    print("Basic: None")
+else:
+    print("Basic Code: " + ', '.join((valid_basic_code)))
+if len(valid_positional_code) == 0:
+    print("Basic: None")
+else:
+    print("Positional: " + ', '.join((valid_positional_code)))
+if len(valid_upc_code) == 0:
+    print("Positional: None")
+else:
+    print("UPC Code: " + ', '.join((valid_upc_code)))
+if len(non_valid_code) == 0:
+    print("UPC: None")
+else:
+    print("None: " + ', '.join(non_valid_code))
