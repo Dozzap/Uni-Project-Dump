@@ -1,0 +1,52 @@
+
+#This program uses list iteration, boolean expressions, variable as placeholders, and functions.
+def basic_code(code):
+    #value_chceker variable will take the last digit of the inputted code
+    value_checker = int(code[-1])
+    #value_tested variable will take all the variables except the last digit and turn it into a list
+    values_tested = (list(map(int,code[0:-1])))
+    #result variable place holder will take result of the process
+    result = 0
+    index = 0
+    #for all the values in list
+    for i in values_tested:
+    #it will add all the digits per loop
+        result += i
+    #will return a boolean express if it pass the check
+    if result % 10 == value_checker:
+        return True
+    else:
+        return False
+def positional_code(code):
+    value_checker = int(code[-1])
+    values_tested = (list(map(int,code[0:-1])))
+    result = 0
+    index = 0
+    #for values in the list
+    for i in values_tested:
+    #values will be multiplied by their positional number and the digit in the list
+        result = result + (i * (index +1 ))
+        index += 1
+    #will give a boolean expression after the check
+    if result % 10 == value_checker:
+        return True
+    else:
+        return False
+def upc_code(code):
+    value_checker = int(code[-1])
+    values_tested = (list(map(int,code[0:-1])))
+    result = 0
+    index = 0
+    #for values in the range of lenght in the list:
+    for i in range(len(values_tested)):
+    #values will be multiplied by 3 if they are even, and digits that are on even positional index will not get multiplied
+        if i % 2 == 1:
+            result = result + (values_tested[i])
+        else:
+            result = result + (values_tested[i]*3)
+    #values will be totaled at the end and will go for the upc checker
+    #will express a boolean expression after the if else statement
+    if (10 - (result % 10)) == value_checker:
+        return True
+    else:
+        return False
