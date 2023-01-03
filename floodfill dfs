@@ -1,0 +1,16 @@
+class Solution:
+    def floodFill(self, image: List[List[int]], sr: int, sc: int, color: int) -> List[List[int]]:
+        R,C = len(image), len(image[1])                       #get len of rows and column
+        curr_Col = image[sr][sc]                              #set the color check
+        if color == curr_Col:                                 #if the newcolor is the same as old color, do nothing
+            return image
+        def dfs(r,c):                                         #define a depth search function
+            if image[r][c] == curr_Col:                       #if the current tile's color matches the checker, perform the function
+                image[r][c] = color                                #change the current tile color to the new one
+                if r>=1:dfs(r-1,c)                                 #check if the tile up is same color
+                if r+1<R:dfs(r+1,c)                                #check if the tile below is the same color
+                if c>=1:dfs(r,c-1)                                 #check if the tile on left is the same color
+                if c+1<C:dfs(r,c+1)                                #check if the tile on right is the same color
+
+        dfs(sr,sc)
+        return image
