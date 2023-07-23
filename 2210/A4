@@ -1,0 +1,72 @@
+
+class Q1 {
+
+    // method for getting the number of combinations given a list of coins and an
+    // amount
+    // This solution is made from the idea that the coins can be repeatedly used and
+    // that the order of the coins does not matter
+    // Additionally, given an amount, there will always be a combination of coins
+    // that will add up to the amount
+    public static int changes(int amount, int[] coins) {
+
+        // initialize the 2d array for computing the number of combinations
+        int[][] combinations = new int[coins.length + 1][amount + 1];
+
+        // initialize the first column to 1 for the number of combinations
+        combinations[0][0] = 1;
+
+        // loop through the coins array
+        for (int i = 1; i <= coins.length; i++) {
+
+            // initialize the first row to 1 for the number of combinations
+            combinations[i][0] = 1;
+
+            // loop through the combinations array and calculate the number of combinations
+            for (int j = 1; j <= amount; j++) {
+
+                // if j is greater than or equal to the coin value, then add the number of
+                // combinations from the previous row and the number of combinations from the
+                // same row but the column value minus the coin value
+                if (j >= coins[i - 1]) {
+                    combinations[i][j] = combinations[i - 1][j] + combinations[i][j - coins[i - 1]];
+                    // else just add the number of combinations from the previous row
+                } else {
+                    combinations[i][j] = combinations[i - 1][j];
+                }
+            }
+        }
+        // return the number of combinations
+        return combinations[coins.length][amount];
+    }
+
+    public static void main(String[] args) {
+        // initialize the coins array
+        int[] coins = { 1, 2, 3 };
+        int[] coin2 = { 2, 5, 3, 6 };
+
+        // Test 1
+        int amount = 6;
+        int expected = 7;
+        int actual = changes(amount, coins);
+        System.out.println("Test 1: " + "Amount " + amount + " Expected: " + expected + " Actual: " + actual);
+        System.out.println("Test 1: " + (expected == actual ? "passed" : "failed"));
+
+        // Test 2
+        amount = 10;
+        expected = 5;
+        actual = changes(amount, coin2);
+        System.out.println("Test 1: " + "Amount " + amount + " Expected: " + expected + " Actual: " + actual);
+
+        System.out.println("Test 1: " + (expected == actual ? "passed" : "failed"));
+
+        // Test 3
+        // Explanation, there is only one way to make 0 cents, which is to use no coins
+        amount = 0;
+        expected = 1;
+        actual = changes(amount, coins);
+        System.out.println("Test 1: " + "Amount " + amount + " Expected: " + expected + " Actual: " + actual);
+
+        System.out.println("Test 1: " + (expected == actual ? "passed" : "failed"));
+
+    }
+}
